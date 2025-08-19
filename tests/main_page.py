@@ -7,7 +7,7 @@ import time
 class MainPage:
     def __init__(self, driver, wait=None):
         self.driver = driver
-        self.wait = wait or WebDriverWait(driver, 60, ignored_exceptions=(StaleElementReferenceException,))
+        self.wait = WebDriverWait(driver, 60, ignored_exceptions=(StaleElementReferenceException,))
 
     def open(self, url):
         self.driver.get(url)
