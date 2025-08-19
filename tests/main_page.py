@@ -1,12 +1,13 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException
 import time
 
 class MainPage:
     def __init__(self, driver, wait=None):
         self.driver = driver
-        self.wait = wait or WebDriverWait(driver, 60)
+        self.wait = wait or WebDriverWait(driver, 60, ignored_exceptions=(StaleElementReferenceException,))
 
     def open(self, url):
         self.driver.get(url)
