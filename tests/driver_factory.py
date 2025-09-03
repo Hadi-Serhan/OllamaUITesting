@@ -38,11 +38,8 @@ class DriverFactory:
         # unique user-data-dir to avoid "in use" in CI
         tmp_profile = tempfile.mkdtemp(prefix="chrome-profile-")
         opts.add_argument(f"--user-data-dir={tmp_profile}")
-
-        driver = webdriver.Chrome(
-            service=ChromeService(ChromeDriverManager().install()),
-            options=opts,
-        )
+        
+        driver = webdriver.Chrome(options=opts)
         driver._tmp_profile = tmp_profile
         return driver
 
@@ -52,10 +49,8 @@ class DriverFactory:
             opts.binary_location = FIREFOX_BIN
         if self.headless:
             opts.add_argument("--headless")
-        driver = webdriver.Firefox(
-            service=FirefoxService(GeckoDriverManager().install()),
-            options=opts,
-        )
+
+        driver = webdriver.Firefox(options=opts)
         driver.set_window_size(self.width, self.height)
         return driver
 
