@@ -49,12 +49,20 @@ class MainPage:
     
     
     def wait_for_reply(self):
-        # Wait for atleat 2 msgs
-        self.wait.until(
-            lambda d: len(d.find_elements(By.CSS_SELECTOR, ".break-words")) >= 2 and
-            d.find_elements(By.CSS_SELECTOR, ".break-words")[1].text.strip() != ""
-        )
-        # Extract model msg
-        all_msgs = self.driver.find_elements(By.CSS_SELECTOR, ".break-words")
-        latest_model_reply = all_msgs[-1]
-        return latest_model_reply.text.strip() if latest_model_reply else ""
+        """
+        Wait for any non-empty assistant bubble.
+        Assistant bubbles are left-aligned and have a container with 'self-start'.
+        """
+        def _assistant_text(d):
+            # Prefer explicit assistant container; fall back to any .break-words
+            candidates = d.find_elements(
+                By.CSS_SELECTOR,
+                "div.self-start .break-words, .assistant .break-words, .break-words"
+            )
+            for el in reversed(candidates):
+                txt = el.text.strip()
+                if txt:
+                    return txt
+            return False
+
+        return self.wait.until(_assistant_text)
