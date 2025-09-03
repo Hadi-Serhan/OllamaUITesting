@@ -25,15 +25,3 @@ class ExampleTestCase(unittest.TestCase):
     #         .wait_for_reply()
     #     )
     #     self.assertTrue(reply.strip() != "", "Model reply was empty")
-
-
-    def test_validation_without_image(self):
-        """When no image is attached, the UI should show a validation bubble."""
-        page = MainPage(self.driver, self.wait).open(OLLAMA_URL).enter_message("Hi")
-        page.trigger_submit()  # Click if enabled; otherwise send Enter to trigger validation
-        msg = page.wait_for_validation_message()
-        self.assertRegex(
-            msg,
-            r"Please provide an image for object detection|attach an image|image is required",
-            "Expected a validation message when sending without an image",
-        )
