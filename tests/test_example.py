@@ -20,7 +20,6 @@ class ExampleTestCase(unittest.TestCase):
         reply = (
             MainPage(self.driver, self.wait)
             .open(OLLAMA_URL)
-            .select_model()      # respects MODEL_NAME from config if set
             .enter_message("Hi")
             .send_message()
             .wait_for_reply()
